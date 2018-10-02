@@ -1,0 +1,45 @@
+<label>Lista de Cobros</label>
+<label>Filtrar lista</label>
+<div class="row">
+  <div class="form-group col-md-4">
+    <label for="placa">Placa</label>
+    <input type="text" class="form-control" id="placaBuscar"
+            required
+            [(ngModel)]="placaIngresada" name="placa">
+  </div>
+
+  <div class="form-group col-md-5">
+    <label>Tipo de Vehiculo</label>
+    <select class="form-control" [(ngModel)]="nombreTipo">
+      <option [value]="tipoVehiculo.nombre" *ngFor="let tipoVehiculo of tiposVehiculo">{{tipoVehiculo.nombre}}</option>
+    </select>
+  </div>
+  <div class="col-md-3">
+      <br>
+    <button type="button" class="btn btn-info" (click)="limpiar()">limpiar</button>
+  </div>
+</div>
+
+<table class="table table-hover col" id="vehiculosResult" *ngIf="consultaParqueados && consultaParqueados.length > 0 ; else menajeNoData">
+  <thead>
+    <tr>
+      <th scope="col">Placa</th>
+      <th scope="col">Tipo</th>
+      <th scope="col">Fecho de Ingreso</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let vehiculo of consultaParqueados | filter: placaIngresada: nombreTipo">
+      <td>{{vehiculo.placa}}</td>
+      <td>{{vehiculo.tipo}}</td>
+      <td>{{vehiculo.fechaIngreso | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+      <td>
+        <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Registrar salida" (click)='registrarSalidaVehiculo(vehiculo.placa)'>
+            <span class="fa fa-sign-out" aria-hidden="true"></span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<ng-template #menajeNoData>No se encontraron vehículos parqueados</ng-template>
